@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,13 @@ import java.util.Scanner;
 public class Controller {
 	private static Scanner consoleScanner = new Scanner(System.in);
 
-	public static void main(String[] args) throws IOException {
+	/**
+	 * this is the entry point to the program
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
+	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.err
 					.println("Application usage: application input.txt output.txt");
@@ -22,7 +29,16 @@ public class Controller {
 		}
 
 		ArrayList<String> postFixes = new ArrayList<String>();
-		for (String line : FileIO.getFileLines(args[0])) {
+
+		ArrayList<String> inputLines = new ArrayList<String>();
+		try {
+			inputLines = FileIO.getFileLines(args[0]);
+		} catch (FileNotFoundException ex) {
+			System.out.println(ex + ": input file:" + args[0]);
+			System.exit(2);
+		}
+
+		for (String line : inputLines) {
 			// try catch to find a badly formatted input and step over it
 			try {
 				LinkedList<String> postfix = FixConverter
@@ -52,7 +68,16 @@ public class Controller {
 				System.exit(3);
 			}
 		}
-		FileIO.writeToFile(args[1], postFixes);
+
+		try {
+			FileIO.writeToFile(args[1], postFixes);
+		} catch (FileNotFoundException ex1) {
+			System.out.println(ex1 + ": output file:" + args[1]);
+			System.exit(2);
+		} catch (IOException ex2) {
+			System.out.println(ex2);
+			System.exit(2);
+		}
 	}
 
 	/**
