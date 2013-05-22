@@ -34,7 +34,8 @@ public class Controller {
 		try {
 			inputLines = FileIO.getFileLines(args[0]);
 		} catch (FileNotFoundException ex) {
-			System.out.println(ex + ": input file:" + args[0]);
+			System.out.println("input file: " + args[0]
+					+ " could not be located");
 			System.exit(2);
 		}
 
@@ -71,9 +72,6 @@ public class Controller {
 
 		try {
 			FileIO.writeToFile(args[1], postFixes);
-		} catch (FileNotFoundException ex1) {
-			System.out.println(ex1 + ": output file:" + args[1]);
-			System.exit(2);
 		} catch (IOException ex2) {
 			System.out.println(ex2);
 			System.exit(2);

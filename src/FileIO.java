@@ -18,7 +18,7 @@ public class FileIO {
 	 * 
 	 * @param inputFileName
 	 *            the name of the input file
-	 * @return 
+	 * @return
 	 * @throws FileNotFoundException
 	 */
 	public static ArrayList<String> getFileLines(String inputFileName)
@@ -27,9 +27,7 @@ public class FileIO {
 
 		File inputFile = new File(inputFileName);
 		if (!inputFile.exists()) {
-			System.err.println("Input file '" + inputFileName
-					+ "' could not be located.");
-			System.exit(2);
+			throw new FileNotFoundException();
 		}
 
 		Scanner fileReader = new Scanner(inputFile);
