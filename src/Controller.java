@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 /**
  * This is the Controller of the program
- * @author Sorin
- *
+ * 
+ * 
  */
 public class Controller {
 	private static Scanner consoleScanner = new Scanner(System.in);
@@ -55,6 +55,14 @@ public class Controller {
 		FileIO.writeToFile(args[1], postFixes);
 	}
 
+	/**
+	 * This method provides a way to read all the unknows from the operations
+	 * from the input
+	 * 
+	 * @param unknowns
+	 *            the unknowns of the program
+	 * @return the values of the unknows read from the keyboard
+	 */
 	private static Map<String, Double> readUnknowns(List<String> unknowns) {
 		Map<String, Double> values = new HashMap<>();
 		Double readValue;
@@ -67,6 +75,13 @@ public class Controller {
 		return values;
 	}
 
+	/**
+	 * Thsi method provides a way to read a double from the keyboard
+	 * 
+	 * @param name
+	 *            the name of the unknown
+	 * @return the value of the unknown
+	 */
 	private static Double readDouble(String name) {
 		boolean success = false;
 		Double result = null;

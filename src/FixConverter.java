@@ -86,17 +86,32 @@ public class FixConverter {
 
 	private static boolean isLegalOperation(String[] input) {
 		int nrBracketsUnclosed = 0;
-		
-		
-		
+
 		for (String token : input) {
 			if (token.equals("(")) {
 				nrBracketsUnclosed++;
 			} else if (token.equals(")")) {
 				nrBracketsUnclosed--;
-			} else if (!isOperator(token) && !token.matches("[a-z]{1,}") //checks if it not an unknown & an operator
-					&& !token.matches("[+-]{0,1}[0-9]{1,}") //check if it it is not a number
-					&& !token.matches("[+-]{0,1}[0-9]{1,}[.]{0,1}[0-9]{1,}")) { //checks it is not a number with decimal point
+			} else if (!isOperator(token) && !token.matches("[a-z]{1,}") // checks
+																			// if
+																			// it
+																			// not
+																			// an
+																			// unknown
+																			// &
+																			// an
+																			// operator
+					&& !token.matches("[+-]{0,1}[0-9]{1,}") // check if it it is
+															// not a number
+					&& !token.matches("[+-]{0,1}[0-9]{1,}[.]{0,1}[0-9]{1,}")) { // checks
+																				// it
+																				// is
+																				// not
+																				// a
+																				// number
+																				// with
+																				// decimal
+																				// point
 				return false;
 			}
 
