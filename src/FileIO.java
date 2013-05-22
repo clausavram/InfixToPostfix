@@ -5,14 +5,30 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class provides a way for the program to fetch and write data to a file
+ * 
+ * @author Sorin
+ * 
+ */
 public class FileIO {
 
-	public static ArrayList<String> getFileLines(String inputFileName) throws FileNotFoundException {
+	/**
+	 * This method provides a way to get the lines from a file
+	 * 
+	 * @param inputFileName
+	 *            the name of the input file
+	 * @return 
+	 * @throws FileNotFoundException
+	 */
+	public static ArrayList<String> getFileLines(String inputFileName)
+			throws FileNotFoundException {
 		ArrayList<String> lines = new ArrayList<String>();
 
 		File inputFile = new File(inputFileName);
 		if (!inputFile.exists()) {
-			System.err.println("Input file '" + inputFileName + "' could not be located.");
+			System.err.println("Input file '" + inputFileName
+					+ "' could not be located.");
 			System.exit(2);
 		}
 
@@ -28,7 +44,8 @@ public class FileIO {
 		return lines;
 	}
 
-	public static void writeToFile(String outputFileName, ArrayList<String> content) throws IOException {
+	public static void writeToFile(String outputFileName,
+			ArrayList<String> content) throws IOException {
 		File outputFile = new File(outputFileName);
 		if (!outputFile.exists()) {
 			outputFile.createNewFile();

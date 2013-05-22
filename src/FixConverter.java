@@ -6,15 +6,28 @@ import java.util.Stack;
 
 public class FixConverter {
 
-	public static LinkedList<String> convertInToPostfix(String input) {
-		String[] infix = input.replaceAll(" ", "").replaceAll("[+\\(\\)\\-\\*\\^\\/]", " $0 ").replaceAll(" +", " ").trim().split(" ");
+	public static LinkedList<String> convertInToPostfix(String input)
+			throws IllegalOperationInput {
+
+		String[] infix = convertBrackets(input).replaceAll(" ", "")
+				.replaceAll("[+\\(\\)\\-\\*\\^\\/]", " $0 ")
+				.replaceAll(" +", " ").trim().split(" ");
+
+		if (!isLegalOperation(infix)) {
+			throw new IllegalOperationInput();
+		}
+
 		Stack<String> stack = new Stack<String>();
-		LinkedList<String> postfix = new LinkedList<>(); // Queue: offer / peek / poll
+		LinkedList<String> postfix = new LinkedList<>(); // Queue: offer / peek
+															// / poll
 
 		// Unary adaptation:
 		for (int i = 0; i < infix.length; i++) {
-			if (infix[i].matches("[+-]") && (i == 0 || isOperator(infix[i - 1]) || infix[i - 1].matches("\\("))) {
-				infix[i] = (infix[i].equals("+")) ? ArithmeticOperation.UNARY_PLUS : ArithmeticOperation.UNARY_MINUS;
+			if (infix[i].matches("[+-]")
+					&& (i == 0 || isOperator(infix[i - 1]) || infix[i - 1]
+							.matches("\\("))) {
+				infix[i] = (infix[i].equals("+")) ? ArithmeticOperation.UNARY_PLUS
+						: ArithmeticOperation.UNARY_MINUS;
 			}
 		}
 
@@ -24,7 +37,8 @@ public class FixConverter {
 				stack.push(element);
 			} else if (isOperator(element)) {
 				while (!stack.isEmpty() && !stack.peek().equals(")")) {
-					if (ArithmeticOperation.precedence(stack.peek()) >= ArithmeticOperation.precedence(element)) {
+					if (ArithmeticOperation.precedence(stack.peek()) >= ArithmeticOperation
+							.precedence(element)) {
 						postfix.offer(stack.pop());
 					} else {
 						break;
@@ -43,7 +57,7 @@ public class FixConverter {
 			}
 		}
 
-		// empty remaining opartors
+		// empty remaining operators
 		while (!stack.isEmpty()) {
 			postfix.offer(stack.pop());
 		}
@@ -51,7 +65,52 @@ public class FixConverter {
 		return postfix;
 	}
 
-	public static double compute(LinkedList<String> postfix, Map<String, Double> variables) {
+	/**
+	 * This method converts all brackets to standard brackets -> (,)
+	 * 
+	 * @param input
+	 *            the string to be converted
+	 * @return the converted string
+	 */
+	private static String convertBrackets(String input) {
+		String inputConverted;
+
+		inputConverted = input;
+		inputConverted = inputConverted.replace("{", "(");
+		inputConverted = inputConverted.replace("}", ")");
+		inputConverted = inputConverted.replace("[", "(");
+		inputConverted = inputConverted.replace("]", ")");
+
+		return inputConverted;
+	}
+
+	private static boolean isLegalOperation(String[] input) {
+		int nrBracketsUnclosed = 0;
+		
+		
+		
+		for (String token : input) {
+			if (token.equals("(")) {
+				nrBracketsUnclosed++;
+			} else if (token.equals(")")) {
+				nrBracketsUnclosed--;
+			} else if (!isOperator(token) && !token.matches("[a-z]{1,}") //checks if it not an unknown & an operator
+					&& !token.matches("[+-]{0,1}[0-9]{1,}") //check if it it is not a number
+					&& !token.matches("[+-]{0,1}[0-9]{1,}[.]{0,1}[0-9]{1,}")) { //checks it is not a number with decimal point
+				return false;
+			}
+
+		}
+		if (nrBracketsUnclosed != 0) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	public static double compute(LinkedList<String> postfix,
+			Map<String, Double> variables) {
 		LinkedList<String> copyList = new LinkedList<>(postfix);
 		Stack<Double> results = new Stack<>();
 		while (!copyList.isEmpty()) {
@@ -63,7 +122,8 @@ public class FixConverter {
 				}
 			} else {
 				Double operand1, operand2 = null;
-				ArithmeticOperation operation = ArithmeticOperation.getInstance(copyList.poll());
+				ArithmeticOperation operation = ArithmeticOperation
+						.getInstance(copyList.poll());
 
 				if (!(operation instanceof ArithmeticOperation.UnaryOperation)) {
 					operand2 = results.pop();
@@ -86,7 +146,9 @@ public class FixConverter {
 			builder.append(item);
 			builder.append(" ");
 		}
-		return builder.toString().replaceAll(ArithmeticOperation.UNARY_PLUS, "u+").replaceAll(ArithmeticOperation.UNARY_MINUS, "u-");
+		return builder.toString()
+				.replaceAll(ArithmeticOperation.UNARY_PLUS, "u+")
+				.replaceAll(ArithmeticOperation.UNARY_MINUS, "u-");
 	}
 
 	public static List<String> getUnknowns(LinkedList<String> postfix) {
@@ -109,6 +171,8 @@ public class FixConverter {
 	}
 
 	private static boolean isOperator(String str) {
-		return str.matches("^[+-/*\\^]$") || str.equals(ArithmeticOperation.UNARY_PLUS) || str.equals(ArithmeticOperation.UNARY_MINUS);
+		return str.matches("^[+-/*\\^]$")
+				|| str.equals(ArithmeticOperation.UNARY_PLUS)
+				|| str.equals(ArithmeticOperation.UNARY_MINUS);
 	}
 }
