@@ -50,22 +50,38 @@ public class FixConverter {
 			if (element.equals("(")) {
 				stack.push(element);
 			} else if (isOperator(element)) {
-				while (!stack.isEmpty() && !stack.peek().equals(")")) {
-					if (ArithmeticOperation.precedence(stack.peek()) >= ArithmeticOperation
-							.precedence(element)) {
-						postfix.offer(stack.pop());
+				if (stack.empty()) {
+					stack.push(element);
+				} else {
+					while (!stack.isEmpty()) {
+						String item = stack.pop();
+						if (item.equals("(")) {
+							stack.push(item);
+						} else if (isOperator(item)) {
+							if (ArithmeticOperation.precedence(item) < ArithmeticOperation
+									.precedence(element)) {
+								stack.push(item);
+							} else {
+								postfix.offer(item);
+							}
+						}
+						if(ArithmeticOperation.precedence(item) < ArithmeticOperation
+									.precedence(element) || item.equals("(")){
+							break;
+						}
+					}
+					stack.push(element);
+				}
+			} else if (element.equals(")")) {
+				while (!stack.isEmpty()) {
+					String item = stack.pop();
+					if (!item.equals("(")) {
+						postfix.offer(item);
 					} else {
 						break;
 					}
 				}
-				stack.push(element);
-			} else if (element.equals(")")) {
-				while (!stack.isEmpty() && !stack.peek().equals("(")) {
-					postfix.offer(stack.pop());
-				}
-				if (!stack.isEmpty()) {
-					stack.pop();
-				}
+
 			} else {
 				postfix.offer(element);
 			}
