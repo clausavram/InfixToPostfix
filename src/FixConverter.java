@@ -13,11 +13,12 @@ public class FixConverter {
 
 		// Unary adaptation:
 		for (int i = 0; i < infix.length; i++) {
-			if (infix[i].matches("[+-]") && (i == 0 || isOperator(infix[i - 1]) || infix[i - 1].matches("("))) {
+			if (infix[i].matches("[+-]") && (i == 0 || isOperator(infix[i - 1]) || infix[i - 1].matches("\\("))) {
 				infix[i] = (infix[i].equals("+")) ? ArithmeticOperation.UNARY_PLUS : ArithmeticOperation.UNARY_MINUS;
 			}
 		}
 
+		// Reverse Polish Notation conversion:
 		for (String element : infix) {
 			if (element.equals("(")) {
 				stack.push(element);
@@ -42,6 +43,7 @@ public class FixConverter {
 			}
 		}
 
+		// empty remaining opartors
 		while (!stack.isEmpty()) {
 			postfix.offer(stack.pop());
 		}
@@ -66,8 +68,11 @@ public class FixConverter {
 				if (!(operation instanceof ArithmeticOperation.UnaryOperation)) {
 					operand2 = results.pop();
 				}
-
-				operand1 = results.pop();
+				if (!results.empty()) {
+					operand1 = results.pop();
+				} else {
+					operand1 = 0.0;
+				}
 				results.push(operation.execute(operand1, operand2));
 			}
 		}
