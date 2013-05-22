@@ -28,13 +28,17 @@ public class Controller {
 			System.exit(1);
 		}
 
+		doLogic(args[0], args[1]);
+	}
+
+	private static void doLogic(String inputFile, String outputFile) {
 		ArrayList<String> postFixes = new ArrayList<String>();
 
 		ArrayList<String> inputLines = new ArrayList<String>();
 		try {
-			inputLines = FileIO.getFileLines(args[0]);
+			inputLines = FileIO.getFileLines(inputFile);
 		} catch (FileNotFoundException ex) {
-			System.out.println("input file: " + args[0]
+			System.out.println("input file: " + inputFile
 					+ " could not be located");
 			System.exit(2);
 		}
@@ -71,7 +75,7 @@ public class Controller {
 		}
 
 		try {
-			FileIO.writeToFile(args[1], postFixes);
+			FileIO.writeToFile(outputFile, postFixes);
 		} catch (IOException ex2) {
 			System.out.println(ex2);
 			System.exit(2);
