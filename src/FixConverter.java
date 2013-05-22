@@ -4,8 +4,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * This class provides a way to convert infix to postfix and also check if the
+ * input operations are correctly formatted
+ * 
+ */
 public class FixConverter {
 
+	/**
+	 * This method provides a way to convert a String representing an infix
+	 * operation to postfix
+	 * 
+	 * @param input
+	 *            the input string representing the operation
+	 * @return the list representing all the tokens in the operation
+	 * @throws IllegalOperationInput
+	 */
 	public static LinkedList<String> convertInToPostfix(String input)
 			throws IllegalOperationInput {
 
@@ -87,6 +101,24 @@ public class FixConverter {
 	private static boolean isLegalOperation(String[] input) {
 		int nrBracketsUnclosed = 0;
 
+		if (input.length < 1) {
+			return false;
+		}
+
+		if (!input[input.length - 1].matches("[a-z]{1,}")
+				&& !input[input.length - 1].matches("[0-9]{1,}")
+				&& !input[input.length - 1].matches("[\\(\\)]")) {
+
+			return false;
+		}
+
+		if (!input[0].matches("[a-z]{1,}") && !input[0].matches("[0-9]{1,}")
+				&& !input[0].matches("[-+].{0,}")
+				&& !input[0].matches("[+-]{0,1}[0-9]{1,}[.]{0,1}[0-9]{1,}")
+				&& !input[input.length - 1].matches("[\\(\\)]")) {
+			return false;
+		}
+
 		for (String token : input) {
 			if (token.equals("(")) {
 				nrBracketsUnclosed++;
@@ -112,11 +144,13 @@ public class FixConverter {
 																				// with
 																				// decimal
 																				// point
+
 				return false;
 			}
 
 		}
 		if (nrBracketsUnclosed != 0) {
+
 			return false;
 		}
 

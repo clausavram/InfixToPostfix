@@ -8,7 +8,6 @@ import java.util.Scanner;
 /**
  * This class provides a way for the program to fetch and write data to a file
  * 
- * @author Sorin
  * 
  */
 public class FileIO {
@@ -42,6 +41,17 @@ public class FileIO {
 		return lines;
 	}
 
+	/**
+	 * This method provides a way to write an ArrayList of Strings to a file,
+	 * one on every line
+	 * 
+	 * @param outputFileName
+	 *            the name of the file where the strings will be written
+	 * @param content
+	 *            the Strings that need to be written
+	 * @throws IOException
+	 *             throws and exception in case the writting fails
+	 */
 	public static void writeToFile(String outputFileName,
 			ArrayList<String> content) throws IOException {
 		File outputFile = new File(outputFileName);

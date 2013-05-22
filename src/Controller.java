@@ -10,7 +10,8 @@ import java.util.Scanner;
 /**
  * This is the Controller of the program
  * 
- * 
+ * We considered using a SINGLETON pattern for this class but since it does not
+ * maintain any state we went with using STATIC METHODS
  */
 public class Controller {
 	private static Scanner consoleScanner = new Scanner(System.in);
@@ -31,6 +32,15 @@ public class Controller {
 		doLogic(args[0], args[1]);
 	}
 
+	/**
+	 * This method uses all the other classes from the program to proccess the
+	 * data from the input file
+	 * 
+	 * @param inputFile
+	 *            the file where the operations are read from
+	 * @param outputFile
+	 *            the file where the postfix conversion is done
+	 */
 	private static void doLogic(String inputFile, String outputFile) {
 		ArrayList<String> postFixes = new ArrayList<String>();
 
